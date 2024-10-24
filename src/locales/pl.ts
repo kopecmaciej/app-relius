@@ -7,4 +7,6 @@ export default {
   about: "O mnie",
   projects: "Projekty",
   contact: "Kontakt",
+  aboutTitle: "O mnie",
+  aboutDescription: "Jestem web deweloperem pasjonującym się budowaniem rzeczy dla sieci.",
 } as const;

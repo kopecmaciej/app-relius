@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/locales/client";
 import { motion } from "framer-motion";
+import { LucideIcon, Mail, Github, Linkedin } from "lucide-react";
+import { shadcnComponent } from "shadcn";
 
 export default function Home() {
   const t = useI18n();
@@ -45,6 +47,12 @@ export default function Home() {
           <a href="/projects">{t("viewProjects")}</a>
         </Button>
       </motion.div>
+
+      <shadcnComponent>
+        <Mail />
+        <Github />
+        <Linkedin />
+      </shadcnComponent>
     </div>
   );
 }
