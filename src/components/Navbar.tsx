@@ -14,7 +14,7 @@ export default function Navbar() {
     <nav className="bg-background text-foreground p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-xl font-bold">
-          Your Name
+          App Relius
         </Link>
         <div className="space-x-4 flex items-center">
           <Button variant="ghost" asChild>
