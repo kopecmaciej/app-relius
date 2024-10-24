@@ -1,7 +1,8 @@
 "use client";
 
 import { useI18n } from "@/locales/client";
-import { Github, Linkedin, LucideIcon, Mail } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 
 export default function About() {
   const t = useI18n();
@@ -14,34 +15,28 @@ export default function About() {
       <p className="text-xl mb-8 max-w-2xl text-center text-gray-300">
         {t("aboutDescription")}
       </p>
-      <div className="text-lg text-gray-300">
-        <p>
-          Email:{" "}
-          <a
-            href="mailto:maciejkopec92@gmail.com"
-            className="text-teal-400 hover:underline"
-          >
+      <div className="grid grid-cols-1 gap-2 text-lg text-teal-400 ">
+        <span className="flex items-center">
+          <Mail className="mr-4" />
+          <a href="mailto:maciejkopec92@gmail.com" className="hover:underline">
             maciejkopec92@gmail.com
           </a>
-        </p>
-        <p>
-          GitHub:{" "}
-          <a
-            href="https://github.com/kopecmaciej"
-            className="text-teal-400 hover:underline"
-          >
+        </span>
+        <span className="flex items-center">
+          <GitHubIcon className="mr-4" />
+          <a href="https://github.com/kopecmaciej" className="hover:underline">
             kopecmaciej
           </a>
-        </p>
-        <p>
-          LinkedIn:{" "}
+        </span>
+        <span className="flex items-center">
+          <Linkedin className="mr-4" />
           <a
             href="https://www.linkedin.com/in/m-kopec"
-            className="text-teal-400 hover:underline"
+            className="hover:underline"
           >
             m-kopec
           </a>
-        </p>
+        </span>
       </div>
     </div>
   );

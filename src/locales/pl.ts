@@ -2,11 +2,10 @@ export default {
   greeting: "Cześć, nazywam się",
   name: "Maciej Kopeć",
   description: "Buduję rzeczy dla sieci.",
-  tagline: "Buduję rzeczy dla sieci.",
   viewProjects: "Sprawdź moje projekty!",
   about: "O mnie",
   projects: "Projekty",
   contact: "Kontakt",
   aboutTitle: "O mnie",
-  aboutDescription: "Jestem web deweloperem pasjonującym się budowaniem rzeczy dla sieci.",
+  aboutDescription: "Jeśli chcesz się ze mną skontaktować, możesz to zrobić na jeden z poniższych sposobów.",
 } as const;

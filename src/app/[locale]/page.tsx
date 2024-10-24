@@ -3,8 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/locales/client";
 import { motion } from "framer-motion";
-import { LucideIcon, Mail, Github, Linkedin } from "lucide-react";
-import { shadcnComponent } from "shadcn";
 
 export default function Home() {
   const t = useI18n();
@@ -23,7 +21,6 @@ export default function Home() {
         <h2 className="text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500">
           {t("name")}
         </h2>
-        <p className="text-3xl mb-8 text-gray-300">{t("tagline")}</p>
       </motion.div>
 
       <motion.p
@@ -47,12 +44,6 @@ export default function Home() {
           <a href="/projects">{t("viewProjects")}</a>
         </Button>
       </motion.div>
-
-      <shadcnComponent>
-        <Mail />
-        <Github />
-        <Linkedin />
-      </shadcnComponent>
     </div>
   );
 }
