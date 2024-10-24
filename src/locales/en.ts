@@ -1,7 +1,9 @@
 export default {
-  welcome: "Welcome to My Personal Website",
-  description: "I'm a [Your Profession] passionate about [Your Interests]",
-  learnMore: "Learn More About Me",
+  greeting: "Hi, my name is",
+  name: "Maciej Kopeć",
+  description: "I build things for the web.",
+  tagline: "I build things for the web.",
+  viewProjects: "Check out my projects!",
   about: "About",
   projects: "Projects",
   contact: "Contact",

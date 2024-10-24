@@ -1,8 +1,9 @@
 export default {
-  welcome: "Witaj na mojej stronie",
-  description:
-    "Jestem [Twoja Profesja] pasjonujący się [Twoje Zainteresowania]",
-  learnMore: "Dowiedz się więcej o mnie",
+  greeting: "Cześć, nazywam się",
+  name: "Maciej Kopeć",
+  description: "Buduję rzeczy dla sieci.",
+  tagline: "Buduję rzeczy dla sieci.",
+  viewProjects: "Sprawdź moje projekty!",
   about: "O mnie",
   projects: "Projekty",
   contact: "Kontakt",
