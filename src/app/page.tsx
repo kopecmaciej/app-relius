@@ -1,14 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useI18n } from "@/locales/client";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const t = useI18n();
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-8 text-white">
+    <div className="flex flex-col items-center mt-20 text-white">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -16,10 +13,10 @@ export default function Home() {
         className="text-center"
       >
         <h1 className="text-5xl font-bold mb-2 text-teal-400">
-          {t("greeting")}
+          Hi, my name is
         </h1>
         <h2 className="text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-500">
-          {t("name")}
+          Maciej Kopeć
         </h2>
       </motion.div>
 
@@ -29,7 +26,7 @@ export default function Home() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-xl mb-12 max-w-2xl text-center text-gray-300"
       >
-        {t("description")}
+        I build things for the web.
       </motion.p>
 
       <motion.div
@@ -39,9 +36,9 @@ export default function Home() {
       >
         <Button
           asChild
-          className="bg-teal-500 hover:bg-teal-600 text-white text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+          className="bg-teal-600 hover:bg-teal-700 text-white text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-110"
         >
-          <a href="/projects">{t("viewProjects")}</a>
+          <a href="/projects">Check out my projects!</a>
         </Button>
       </motion.div>
     </div>

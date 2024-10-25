@@ -1,19 +1,13 @@
-"use client";
-
-import { useI18n } from "@/locales/client";
 import { Linkedin, Mail } from "lucide-react";
 import GitHubIcon from "@/components/icons/GitHubIcon";
 
-export default function About() {
-  const t = useI18n();
-
+export default function Contact() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-8 text-white">
-      <h1 className="text-5xl font-bold mb-4 text-teal-400">
-        {t("aboutTitle")}
-      </h1>
+    <div className="flex flex-col items-center min-h-screen py-8 text-white">
+      <h1 className="text-5xl font-bold mb-4 text-teal-400">Contact</h1>
       <p className="text-xl mb-8 max-w-2xl text-center text-gray-300">
-        {t("aboutDescription")}
+        If you want to get in touch, feel free to contact me in any of the ways
+        below
       </p>
       <div className="grid grid-cols-1 gap-2 text-lg text-teal-400 ">
         <span className="flex items-center">
