@@ -18,7 +18,7 @@ export default function Navbar() {
         </Link>
         <div className="space-x-4 flex items-center">
           <Button variant="ghost" asChild>
-            <Link href="/about">{t("about")}</Link>
+            <Link href="/blog">{t("blog")}</Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link href="/projects">{t("projects")}</Link>
@@ -26,7 +26,6 @@ export default function Navbar() {
           <Button variant="ghost" asChild>
             <Link href="/contact">{t("contact")}</Link>
           </Button>
-          <ThemeToggle />
           <Button onClick={() => changeLocale(locale == "pl" ? "en" : "pl")}>
             {locale.toUpperCase()}
           </Button>
