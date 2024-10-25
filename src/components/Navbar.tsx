@@ -26,6 +26,7 @@ export default function Navbar() {
           <Button variant="ghost" asChild>
             <Link href="/contact">{t("contact")}</Link>
           </Button>
+          <ThemeToggle />
           <Button onClick={() => changeLocale(locale == "pl" ? "en" : "pl")}>
             {locale.toUpperCase()}
           </Button>
