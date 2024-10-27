@@ -38,23 +38,14 @@ const Pre = ({ children }: { children: React.ReactNode; theme?: string }) => {
   const code = childrenArray[0] as React.ReactElement;
   const className = code.props.className || "";
   const language = className.replace(/language-/, "");
-  const codeText = code.props.children.trim();
+  const codeText = code.props.children.trim() as string;
+  let command = codeText;
+  let output = "";
 
   // special case for output of command
-  if (language === "out") {
-    return (
-      <SyntaxHighlighter
-        language={"bash"}
-        style={darkTheme}
-        customStyle={{
-          margin: 0,
-          borderRadius: "0 0 0.375rem 0.375rem",
-          padding: "1rem",
-        }}
-      >
-        {codeText}
-      </SyntaxHighlighter>
-    );
+  if (codeText.includes("## Output")) {
+    [command, output] = codeText.split("## Output").map((text) => text.trim());
+    output = `## Output\n${output}`;
   }
 
   const handleCopy = () => {
@@ -93,8 +84,13 @@ const Pre = ({ children }: { children: React.ReactNode; theme?: string }) => {
             padding: "1rem",
           }}
         >
-          {codeText}
+          {command}
         </SyntaxHighlighter>
+        {output && (
+          <SyntaxHighlighter language="bash" style={darkTheme}>
+            {output}
+          </SyntaxHighlighter>
+        )}
       </div>
     </TooltipProvider>
   );
