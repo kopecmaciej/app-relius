@@ -45,7 +45,7 @@ export async function getPosts(): Promise<Post[]> {
     slugs.map(async ({ name }) => {
       const { metadata } = await import(`./(posts)/${name}/page.mdx`);
       return { slug: name, ...metadata };
-    })
+    }),
   );
 
   posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));

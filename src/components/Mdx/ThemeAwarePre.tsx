@@ -33,12 +33,29 @@ export function ThemeAwarePre({
 }
 
 const Pre = ({ children }: { children: React.ReactNode; theme?: string }) => {
+  const [copied, setCopied] = React.useState(false);
   const childrenArray = React.Children.toArray(children);
   const code = childrenArray[0] as React.ReactElement;
   const className = code.props.className || "";
   const language = className.replace(/language-/, "");
   const codeText = code.props.children.trim();
-  const [copied, setCopied] = React.useState(false);
+
+  // special case for output of command
+  if (language === "out") {
+    return (
+      <SyntaxHighlighter
+        language={"bash"}
+        style={darkTheme}
+        customStyle={{
+          margin: 0,
+          borderRadius: "0 0 0.375rem 0.375rem",
+          padding: "1rem",
+        }}
+      >
+        {codeText}
+      </SyntaxHighlighter>
+    );
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeText).then(() => {
@@ -49,7 +66,7 @@ const Pre = ({ children }: { children: React.ReactNode; theme?: string }) => {
 
   return (
     <TooltipProvider>
-      <div className="relative">
+      <div className="relative my-4">
         <div className="bg-gradient-to-r from-teal-800 to-blue-800 text-black px-4 text-sm rounded-t-xl flex justify-between items-center">
           <span>{language}</span>
           <Tooltip>
