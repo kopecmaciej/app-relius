@@ -3,6 +3,7 @@ import { ThemeAwarePre } from "@/components/Mdx/ThemeAwarePre";
 import { Button } from "@/components/ui/button";
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
+import { CollapsibleSection } from "@/components/Mdx/CollapsibleSection";
 
 const generateId = (text: string) =>
   text
@@ -43,6 +44,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       }
       return <>{children}</>;
     },
+    CollapsibleSection: ({ children, title, defaultOpen }) => (
+      <CollapsibleSection title={title} defaultOpen={defaultOpen}>
+        {children}
+      </CollapsibleSection>
+    ),
     ...components,
   };
 }
