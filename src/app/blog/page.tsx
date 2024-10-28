@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { readdir } from "fs/promises";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import matter from "gray-matter";
 
 export default async function Blog() {
   const posts = await getPosts();
@@ -44,11 +43,11 @@ export async function getPosts(): Promise<Post[]> {
 
   const posts = await Promise.all(
     slugs.map(async ({ name }) => {
-      const fs = await import('fs/promises').then(mod => mod.default || mod);
-      const path = `./src/app/blog/(posts)/${name}/page.md`;
-      const fileContent = await fs.readFile(path, "utf-8");
-      const { data: metadata } = matter(fileContent);
-      return { slug: name, ...metadata };
+      const { frontmatter } = await import(`../blog/(posts)/${name}/page.md`);
+      return { 
+        slug: name,
+        ...frontmatter 
+      };
     }),
   ) as Post[];
 

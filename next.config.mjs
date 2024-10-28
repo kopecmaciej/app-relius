@@ -1,4 +1,6 @@
 import createMDX from "@next/mdx";
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,7 +9,13 @@ const nextConfig = {
 };
 
 const withMDX = createMDX({
-  extension: /\.mdx?$/, // This will allow both .md and .mdx files to be treated as MDX
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [
+      remarkFrontmatter,
+      [remarkMdxFrontmatter, { name: 'frontmatter' }]
+    ],
+  },
 });
 
 // Merge MDX config with Next.js config

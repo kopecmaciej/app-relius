@@ -41,7 +41,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <ul className="list-disc pl-6 space-y-2 text-gray-300">{children}</ul>
     ),
     li: ({ children }) => <li className="text-base">{children}</li>,
-    h1: ({ children }) => <h1 className="text-6xl font-bold">{children}</h1>,
+    h1: ({ children }) => (
+      <>
+        <h1 className="text-6xl font-bold mb-6">{children}</h1>
+        <hr className="mt-0 mb-6 h-px border-0 bg-pink-900" />
+      </>
+    ),
     h2: ({ children }) => {
       if (typeof children === "string") {
         const id = generateId(children);
