@@ -1,7 +1,6 @@
-
 export const metadata = {
   title: "Fast way to manually install Arch Linux",
-  publishDate: "2024-10-25 14:30",
+  updated: "2024-10-27",
   readTime: "8 min read",
   categories: ["Linux", "Arch"],
   thumbnail: "/images/blog/arch-linux-grub.webp",
@@ -9,10 +8,10 @@ export const metadata = {
 
 # Fast way to manually install Arch Linux
 
-Firstly, I want to say that this is more of a documentation for myself not a
+Firstly, I want to say that this is more of a documentation for myself, not a
 full guide. I'm writing this because I want to have a reference for myself and I
 want to share it with you. I'm not going to explain every single command here,
-but I'll try to explain the most important ones. Hope you'll find it useful.
+but I'll try to explain the most important ones. I hope you'll find it useful.
 
 Ok, so let's dive in.
 
@@ -24,15 +23,15 @@ There are 3 common ways to install Arch Linux:
 
 In this post, I'll show only how to install Arch Linux manually. From my
 experience, this is the best way to install this distribution. You'll have much
-more control over the installation process, and you'll learn a lot about the
-Linux itself. You'll get to know how to partition the disk, install the
-bootloader, install the packages, configure the network, etc.
+more control over the installation process, and you'll learn a lot about Linux
+itself. You'll get to know how to partition the disk, install the bootloader,
+install the packages, configure the network, etc.
 
-I found this knowledge very useful in my work as a software engineer, for
-example when I was using Docker, I had to know how to configure the network, or
-when I've spun up my own Proxmox server with Kubernetes cluster. For example,
-using the Archinstall script gave me a lot of trouble with the Btrfs file
-system, and eventually, I installed Arch Linux manually.
+I found this knowledge very useful in my work as a software engineer. For
+example, when I was using Docker, I had to know how to configure the network, or
+when I spun up my own Proxmox server with a Kubernetes cluster. Using the
+Archinstall script gave me a lot of trouble with the Btrfs file system, and
+eventually, I installed Arch Linux manually.
 
 Ok, so let's get started.
 
@@ -50,13 +49,13 @@ lsblk
 
 Let's say that the device name is `/dev/sdb`.
 
-To create the bootable USB drive, you can use the dd command:
+To create the bootable USB drive, you can use the `dd` command:
 
 ```bash
 dd bs=4M if={arch-linux.iso} of=/dev/sdb conv=fsync oflag=direct status=progress
 ```
 
-Alternatively, you can use the cat command:
+Alternatively, you can use the `cat` command:
 
 ```bash
 cat arch-linux.iso > /dev/sdb
@@ -64,10 +63,11 @@ cat arch-linux.iso > /dev/sdb
 
 Make sure to replace arch-linux.iso with the actual name of the ISO file.
 
-If you're changing/installing many OSes you can use ventoy, you can download it
-from here: [Get started with Ventoy](https://www.ventoy.net/en/doc_start.html).
-It's a nice tool that will allow you to just copy-paste the iso file and have as
-many OS's as you want on single stick.
+If you're changing or installing many OSes, you can use Ventoy. You can download
+it from here:
+[Get started with Ventoy](https://www.ventoy.net/en/doc_start.html). It's a nice
+tool that allows you to just copy-paste the ISO file and have as many OSes as
+you want on a single stick.
 
 For Windows users, you can use Rufus to create the bootable USB drive. You can
 download it from here: [Rufus](https://rufus.ie/).
@@ -116,87 +116,116 @@ timedatectl set-ntp true
 
 ### Step 3 - Partition the disk
 
-In this section, we'll create partitions for the Arch Linux installation, and
-for simplicity this will be only two partitions, one for the root directory and
-one for boot. Popular approach is to create separate partitions also for home,
-and swap. However, nowadays, it's not necessary to create swap partition, as
-most of new computers have enough RAM. If it comes to home directory, it's handy
-only if you have multiple Linux distros or have ability to port your home
-directory to another computer.
+In this section, we'll create partitions for the Arch Linux installation. When
+creating partitions, here are my recommendations:
+
+- EFI System Partition (ESP): 512MB (can be smaller, but resizing it later can
+  be a pain)
+- Root partition (/): >30GB
+- Swap: 8GB or 16GB should be fine, but tbh I'm not using swap nowadays and I've
+  never run into issues because of that (on my personal CPU, on my server I
+  have swap as the memory usage can be much higher). Read more about
+  [Swap](https://wiki.archlinux.org/title/Swap)
+- Home (/home): Remaining space, or whatever you want
 
 First, let's identify the drive where you want to install Arch Linux:
 
 ```bash
 lsblk
 
-## Example output:
-NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda     259:0    0 953.9G  0 disk
-├─sda1  259:1    0   512M  0 part
-├─sda2  259:2    0 952.4G  0 part
-sdb     259:6    0   7.5G  0 disk
-└─sdb1  259:7    0   7.5G  0 part
+## Output
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+sda           8:0    1  14.9G  0 disk
+├─sda1        8:1    1  14.9G  0 part
+│ └─ventoy  254:0    0 932.3M  1 dm
+└─sda2        8:2    1    32M  0 part
+nvme1n1     259:0    0 931.5G  0 disk
+├─nvme1n1p1 259:1    0   100M  0 part
+├─nvme1n1p2 259:2    0    16M  0 part
+├─nvme1n1p3 259:3    0 930.6G  0 part
+└─nvme1n1p4 259:4    0   778M  0 part
+nvme0n1     259:5    0   1.9T  0 disk
+├─nvme0n1p1 259:6    0   500M  0 part
+└─nvme0n1p2 259:7    0   1.9T  0 part
 ```
 
-In this example, the drive is `/dev/sda`, USB drive is `/dev/sdb`. I've already
-created a partition for the Arch Linux installation, so I have `/dev/sda1` and
-`/dev/sda2` partitions. If you don't have any partitions, you can create a new
-partition with `cfdisk` command:
+In my example, the drive I want to install Arch Linux on is `/dev/nvme0n1`,
+where I have some OSes installed, so I'll wipe it and create new partitions on
+it.
+
+To use `cfdisk` to wipe out /dev/nvme0n1 and create partitions for /root,
+/home, and /boot, follow these steps:
+
+1. Open `cfdisk`: Start by opening `cfdisk` with the device you want to
+partition.
 
 ```bash
-cfdisk /dev/sda
+sudo cfdisk /dev/nvme0n1
 ```
 
-To create the partition just simply choose the `free space` and press `New`
-button. Then choose the size of the partition and press `Enter`. If you don't
-have any free space, you can delete one of the existing partitions and create a
-new one. To delete the partition, choose the partition and press `Delete`
-button. Remember, `cfdisk` is a tool for creating partitions, not for formatting
-them, also after creating/deleting the partition you have to write the changes
-to the disk. To do that, choose the `Write` button and press `Enter`.
+2. Delete Existing Partitions: If your disk already has partitions, you will see
+them listed in the cfdisk interface. Use the arrow keys to navigate to each
+partition and press `[DELETE]` to delete it.
 
-Next step is to format the partitions with `mkfs` command:
+3. Create New Partitions: Use the arrow keys to navigate to the free space and
+press `[NEW]`. Enter the size of the partition (eg: 512 MiB) and press `[OK]`. Repeat this
+process for each partition you want to create. Remember about types:
+
+- `/boot/efi` partition should be of type `EFI System`
+- `/` partition should be of type `Linux filesystem`
+- `/home` partition should be of type `Linux filesystem`
+- `/swap` partition should be of type `Linux swap`
+
+4. Format the Partitions: After creating the partitions, you need to format them
+with the appropriate file system. For example:
 
 ```bash
-mkfs.fat -F32 /dev/sda1
-mkfs.ext4 /dev/sda2
+mkfs.fat -F32 /dev/nvme0n1p1
+mkfs.ext4 /dev/nvme0n1p2
+# Format the home partition
+mkfs.ext4 /dev/nvme0n1p3  # Assuming /dev/nvme0n1p3 is the home partition
+# Format the swap partition if created
+mkswap /dev/nvme0n1p4     # Assuming /dev/nvme0n1p4 is the swap partition
 ```
 
-We're formatting the `/dev/sda2` partition with `ext4` file system and the
-`/dev/sda1` partition with `fat32` file system.
+We're formatting the `/dev/nvme0n1p2` partition with `ext4` file system and the
+`/dev/nvme0n1p1` partition with `fat32` file system.
 
 Now mount the partitions:
 
 ```bash
-mount /dev/sda2 /mnt
+mount /dev/nvme0n1p2 /mnt
+
+# Create and mount home directory
+mkdir -p /mnt/home
+mount /dev/nvme0n1p3 /mnt/home
+
+# Enable swap if created
+swapon /dev/nvme0n1p4
 ```
 
 ### Step 4 - Install necessary packages and configure the system
 
-Follow these commands to proceed with the installation:
+Install base packages with additional essential tools:
+(Not all of them are needed, but it's good to have them)
+
+- `base` and `base-devel` - the base packages for Arch Linux.
+- `linux` and `linux-firmware` - the Linux kernel and its firmware.
+- `intel-ucode` or `amd-ucode` - the microcode for Intel or AMD processors.
+- `efibootmgr`, `grub`, `os-prober`
+  - `efibootmgr` - a tool for managing UEFI boot entries.
+  - `dosfstools` - a tool for manipulating FAT file systems (needed for dual
+    boot)
+  - `os-prober` - to detect other operating systems (like Windows)
+- `networkmanager` - for network management.
+- `git`, `neovim`, `fish` - development tools.
+
+Required packages:
 
 ```bash
-pacstrap /mnt base base-devel linux linux-firmware neovim fish
+pacstrap /mnt \
+    base base-devel linux linux-firmware intel-ucode grub networkmanager
 ```
-
-Generate a `fstab` file to configure the mounting of partitions at boot:
-
-```bash
-genfstab -U /mnt >> /mnt/etc/fstab
-```
-
-This command is used generate a file system table (fstab). We're appending it to
-the `/mnt/etc/fstab` file. The -U option is used to generate UUIDs instead of
-device names. This is useful because device names can change and UUIDs are more
-reliable.
-
-```bash
-arch-chroot /mnt /bin/fish
-```
-
-This command changes the root directory to /mnt. I'm using fish shell here,
-because of auto-completion and syntax highlighting out of the box, but you can
-use bash or zsh.
 
 Ensure your system is booted in UEFI mode by checking for the existence of the
 `/sys/firmware/efi` directory:
@@ -204,26 +233,35 @@ Ensure your system is booted in UEFI mode by checking for the existence of the
 ```bash
 ls /sys/firmware/efi/efivars
 ```
+If the directory doesn't exist, don't install `efibootmgr`, `os-prober`, and
+`dosfstools`.
 
-If the directory exists, run the following command to install the grub:
-
+Additional packages (for dual boot, and my personal preferences):
 ```bash
-pacman -S networkmanager grub efibootmgr os-prober mtools
+pacstrap /mnt \
+   efibootmgr os-prober dosfstools git neovim fish
 ```
 
-Here, `efibootmgr` is a tool for managing UEFI boot entries. `mtools` is a
-collection of tools for manipulating FAT32 file systems. Install `os-prober` if
-you have other operating systems installed on your computer.
+(if you will have keyrings errors, run `pacman -S archlinux-keyring` and try again)
 
-If the directory doesn't exist, run the following command to install just the
-grub:
+Generate a `fstab` file to configure the mounting of partitions at boot:
 
 ```bash
-pacman -S networkmanager grub
+genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-`networkmanager` is just a network manager, so you can connect to the internet
-after rebooting the system.
+This command is used to generate a file system table (fstab). We're appending it
+to the `/mnt/etc/fstab` file. The -U option is used to generate UUIDs instead of
+device names. This is useful because device names can change, and UUIDs are more
+reliable.
+
+```bash
+arch-chroot /mnt /bin/fish
+```
+
+This command changes the root directory to /mnt. I'm using the fish shell here
+because of auto-completion and syntax highlighting out of the box, but you can
+use bash or zsh.
 
 Let's not forget to mount the boot partition:
 
@@ -231,14 +269,14 @@ Let's not forget to mount the boot partition:
 
 ```bash
 mkdir /boot/efi
-mount /dev/sda1 /boot/efi
+mount /dev/nvme0n1p1 /boot/efi
 ```
 
 - without efi:
 
 ```bash
 mkdir /boot
-mount /dev/sda1 /boot
+mount /dev/nvme0n1p1 /boot
 ```
 
 Next step is to configure grub. First we need to install the grub on the disk:
@@ -246,13 +284,13 @@ Next step is to configure grub. First we need to install the grub on the disk:
 - with efi:
 
 ```bash
-grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 ```
 
 - without efi:
 
 ```bash
-grub-install --target=i386-pc /dev/sda
+grub-install --target=i386-pc /dev/nvme0n1
 ```
 
 Grub will be installed on the disk, not on the partition. This is because the
@@ -290,17 +328,17 @@ Now we need to set the root password:
 passwd
 ```
 
-At this point we can exit the chroot environment and reboot the system, but I
+At this point, we can exit the chroot environment and reboot the system, but I
 like to do some extra configuration before that.
 
 First, let's configure language and keyboard layout:
 
 ```bash
-vim /etc/locale.gen
+nvim /etc/locale.gen
 ```
 
 Uncomment the line with the language of your choice. For example, if you want to
-use English, uncomment the line with `en_US.UTF-8 UTF-8`. Now generate the
+use English, uncomment the line with `en_GB.UTF-8 UTF-8`. Now generate the
 locale:
 
 ```bash
@@ -310,13 +348,13 @@ locale-gen
 Now let's set the language:
 
 ```bash
-echo LANG=en_US.UTF-8 > /etc/locale.conf
+echo LANG=en_GB.UTF-8 > /etc/locale.conf
 ```
 
 To set the keyboard layout, we need to create a file:
 
 ```bash
-echo KEYMAP=us > /etc/vconsole.conf
+echo KEYMAP=gb > /etc/vconsole.conf
 ```
 
 Don't forget to set the hostname:
@@ -325,10 +363,18 @@ Don't forget to set the hostname:
 echo {hostname} > /etc/hostname
 ```
 
-Now the time zone:
+After setting the timezone, configure the system clock:
 
 ```bash
 ln -sf /usr/share/zoneinfo/{Region}/{City} /etc/localtime
+hwclock --systohc
+```
+
+Configure the hosts file:
+
+```bash
+echo "127.0.0.1 localhost" >> /etc/hosts
+echo "::1       localhost" >> /etc/hosts
 ```
 
 And the last step is to create a user:
@@ -350,12 +396,32 @@ EDITOR=nvim visudo
 ```
 
 Uncomment the line with `%wheel ALL=(ALL:ALL) ALL` to allow members of the wheel
-group to execute any command.
+group to execute any command (it can be considered a security risk, but if it's
+on a personal computer, it's not a big deal).
+
+If you want to be able to ssh into the system, you need to install `openssh`
+package:
+
+```bash
+pacman -S openssh
+```
+
+Now we can enable the ssh service:
+
+```bash
+systemctl enable sshd.service
+```
 
 Now we can exit the chroot environment:
 
 ```bash
 exit
+```
+
+Unmount the partitions:
+
+```bash
+umount -R /mnt
 ```
 
 And reboot the system:

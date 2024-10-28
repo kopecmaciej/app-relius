@@ -48,7 +48,7 @@ export async function getPosts(): Promise<Post[]> {
     }),
   );
 
-  posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));
+  posts.sort((a, b) => +new Date(b.updated) - +new Date(a.updated));
 
   return posts;
 }

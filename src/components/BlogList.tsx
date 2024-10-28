@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export interface Post {
   title: string;
-  publishDate: string;
+  updated: string;
   readTime: string;
   content: string;
   slug: string;
@@ -31,7 +31,7 @@ export function BlogList({ posts }: { posts: Post[] }) {
               <div className="flex items-center justify-between mb-2 text-sm text-zinc-500">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>{post.publishDate}</span>
+                  <span>{post.updated}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
