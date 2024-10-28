@@ -1,8 +1,8 @@
-export const metadata = {
-  title: "Go pointers in a nutshell",
-  updated: "2023-08-06",
-  readTime: "5 min read",
-};
+---
+title: "Go pointers in a nutshell"
+updated: "2023-08-06"
+readTime: "5 min read"
+---
 
 # Go pointers in a nutshell
 
