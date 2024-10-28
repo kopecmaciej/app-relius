@@ -14,7 +14,7 @@ export default async function Blog() {
           My Blog
         </h1>
         <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
-          Thoughts, ideas, and experiences from my journey in tech
+          No AI bullshit, just me talking to my future self
         </p>
       </div>
 
@@ -41,15 +41,15 @@ export async function getPosts(): Promise<Post[]> {
     await readdir("./src/app/blog/(posts)", { withFileTypes: true })
   ).filter((dirent) => dirent.isDirectory());
 
-  const posts = await Promise.all(
+  const posts = (await Promise.all(
     slugs.map(async ({ name }) => {
       const { frontmatter } = await import(`../blog/(posts)/${name}/page.md`);
-      return { 
+      return {
         slug: name,
-        ...frontmatter 
+        ...frontmatter,
       };
     }),
-  ) as Post[];
+  )) as Post[];
 
   posts.sort((a, b) => +new Date(b.updated) - +new Date(a.updated));
 

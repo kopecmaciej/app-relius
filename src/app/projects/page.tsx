@@ -15,7 +15,7 @@ import Link from "next/link";
 export default function ProjectsPage() {
   const projects = [
     {
-      name: "Vi-Mongo",
+      name: "Vi Mongo",
       url: "https://vi-mongo.com/",
       description: "A powerful MongoDB visualization tool.",
       tags: ["MongoDB", "Visualization", "Open Source"],
