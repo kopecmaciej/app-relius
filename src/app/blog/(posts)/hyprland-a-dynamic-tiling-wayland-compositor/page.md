@@ -70,6 +70,42 @@ repeat_rate = 50
 Ok, now it's time to install some additional packages, like status bar,
 wallpaper manager or file manager.
 
+## Basic packages - quick overview
+
+Before we move to more interesting things, installing some core packages
+will make out life in Hyprland much easier. 
+
+### Audio
+
+In order to have audio working, we need to install couple of packages,
+I'm going with `pipewire` as it's suggested in Hyprland wiki and I have
+pretty good experience with it. This is what we need to install:
+
+```bash
+sudo pacman -S --needed \
+    pipewire \  ## video/audio server
+    pipewire-pulse \ ## pulseaudio compatibility (optional)
+    pipewire-audio \ ## audio support
+    wireplumber \ ## configuration backend
+    pavucontrol \ ## gui mixer for pulseaudio
+```
+
+### Utility packages
+
+```bash
+sudo pacman -S --needed \
+    ## hyprland integration
+    xdg-desktop-portal-hyprland \ ## hyprland integration with xdg-desktop-portal
+    sddm \ ## desktop environment manager
+    swaync \ ## notification daemon
+    ## fonts
+    ttf-jetbrains-mono-nerd \ ## monospace font with nerd icons
+    noto-fonts \ ## default font family
+    noto-fonts-emoji \ ## emoji font
+    ## utils
+    wl-clipboard \ ## clipboard manager
+```
+
 ### Status bar
 
 #### Install waybar
@@ -80,6 +116,7 @@ just run:
 ```bash
 sudo pacman -S waybar
 ```
+#### Configure Waybar
 
 ### File manager
 
@@ -93,10 +130,6 @@ sudo pacman -S dolphin
 Then we can access it using `SUPER + E`. That's it about file manager
 
 ### App manager (rofi)
-
-### Fonts and icons
-
-#### Configure Waybar
 
 ### Lock screen
 
