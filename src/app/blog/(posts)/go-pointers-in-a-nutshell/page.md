@@ -2,6 +2,7 @@
 title: "Go pointers in a nutshell"
 updated: "2023-08-06"
 readTime: "5 min read"
+categories: ["Go", "Programming"]
 ---
 
 # Go pointers in a nutshell

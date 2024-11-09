@@ -2,8 +2,7 @@
 title: "Fast way to manually install Arch Linux"
 updated: "2024-10-27"
 readTime: "8 min read"
-categories: ["Linux", "Arch"]
-thumbnail: "/images/blog/arch-linux-grub.webp"
+categories: ["Linux", "OS"]
 ---
 
 # Fast way to manually install Arch Linux

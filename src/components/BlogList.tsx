@@ -48,6 +48,16 @@ export function BlogList({ posts }: { posts: Post[] }) {
                   <CardTitle className="text-2xl font-semibold text-zinc-200 group-hover:text-teal-500 transition-colors">
                     {post.title}
                   </CardTitle>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {post.categories.map((category) => (
+                      <span
+                        key={category}
+                        className="px-2 py-1 text-xs rounded-full bg-teal-500/20 text-teal-300"
+                      >
+                        {category}
+                      </span>
+                    ))}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-zinc-400">{post.content}</p>
@@ -92,6 +102,16 @@ export function BlogList({ posts }: { posts: Post[] }) {
               <CardTitle className="text-2xl font-semibold text-zinc-200 group-hover:text-teal-500 transition-colors">
                 {latestPosts[0].title}
               </CardTitle>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {latestPosts[0].categories.map((category) => (
+                  <span
+                    key={category}
+                    className="px-2 py-1 text-xs rounded-full bg-teal-500/20 text-teal-300"
+                  >
+                    {category}
+                  </span>
+                ))}
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-zinc-400">{latestPosts[0].content}</p>
@@ -138,6 +158,16 @@ export function BlogList({ posts }: { posts: Post[] }) {
                   <CardTitle className="text-2xl font-semibold text-zinc-200 group-hover:text-teal-500 transition-colors">
                     {post.title}
                   </CardTitle>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {post.categories.map((category) => (
+                      <span
+                        key={category}
+                        className="px-2 py-1 text-xs rounded-full bg-teal-500/20 text-teal-300"
+                      >
+                        {category}
+                      </span>
+                    ))}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-zinc-400">{post.content}</p>
