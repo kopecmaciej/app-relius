@@ -2,6 +2,7 @@
 title: "Hyprland - A dynamic tiling Wayland compositor"
 updated: "2024-10-28"
 readTime: "5 min read"
+categories: ["Linux", "Window Manager"]
 ---
 
 # Hyprland - A dynamic tiling Wayland compositor
