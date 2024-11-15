@@ -14,7 +14,7 @@ export default async function Blog() {
           My Blog
         </h1>
         <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
-          No AI bullshit, just me talking to my future self
+          Just me talking to my future self
         </p>
       </div>
 
