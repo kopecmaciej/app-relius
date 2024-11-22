@@ -26,7 +26,7 @@ export default function Home() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="text-xl mb-12 max-w-2xl text-center text-gray-300"
       >
-        I build things for the web.
+        and I just love to code
       </motion.p>
 
       <motion.div
